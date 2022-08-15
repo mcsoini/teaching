@@ -1,0 +1,166 @@
+\documentclass[11pt]{article}
+
+\usepackage{a4wide}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tabularx}
+%\graphicspath{{expt/}}
+\usepackage{times}
+\usepackage[varg]{txfonts}
+\usepackage{color}
+\usepackage{epsfig}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{verbatim}
+
+\begin{document}
+
+\pagenumbering{arabic}
+\title{TN2624 MATLAB Session 4}
+\date{March 7, 2013}
+%\date{\today}
+\maketitle
+\begin{quote} 
+All practical sessions \textbf{must}
+\begin{itemize}
+{\color{red}\item be completed between 08:45 AM and 10:30 AM.}
+\item be completed in couples (meaning: $n = 2 \pm 0.0$)
+\end{itemize}
+By the end of this practical session you have to submit a MATLAB m-file and a word or pdf file. The MATLAB m-file should
+\begin{itemize}
+\item be only a single m-file (if you feel the need to define a function in an extra file it can be more than one, of course)
+\item contain the code for all questions of this session.
+\end{itemize}
+The word/pdf file must
+\begin{itemize}
+\item be written in English.
+\item have the answer to each question formatted as follows: 
+	\begin{itemize}
+	\item MATLAB code if required in the question
+	\item answers to all sub-questions, including figures, equations and any other required discussion.
+	\end{itemize}
+\end{itemize}
+Both the MATLAB m-file and the word/pdf file must
+\begin{itemize}
+\item have the names and student ID numbers of both students at the top of each file.
+\item be named using the Net ID and student ID of the people in your group, as follows:\\
+	\verb|NETID_STUDENTID_NETID_STUDENTID_MATLAB4.extension|
+\item or, for those who are working alone:\\
+	\verb|NETID_STUDENTID_MATLAB4.extension|
+\item ‘.extension’ will either be ‘.m’ or ‘.doc’/‘.pdf’.
+\end{itemize}
+{\color{red}
+Please note:
+\begin{itemize}
+\item The m-file will \textbf{not} be taken into consideration for grading. All relevant results must be present in the report.
+\item Points will be deducted for missing labels (and legends, if necessary) on plots.
+\end{itemize}
+}
+\end{quote}
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent\textbf{Constants:} $N_A=6{.}022\cdot10^{23}\,\mathrm{mol^{-1}}, k_\mathrm{b}=1{.}38\cdot10^{-23}\mathrm{J/K}$, $1\mathrm{eV}=1{.}6\cdot 10^{-19}\,\mathrm{J}$\\
+\textbf{This problem set is probably much easier to solve if you don't use any for-loops at all.}
+
+\section*{Heat capacity of the Einstein solid  -- numerical calculations (50 pts)}
+\label{sec:lot}
+In this problem we will derive the heat capacity of the Einstein solid by a numerical approach. We will start from the multiplicities of a solid with a fixed number of oscillators and varying numbers of energy units. We will use a lot of crude numerical derivatives which can be implemented using the Matlab function \verb|diff()|. Since the vector returned by this function is shorter than the vector in the argument we will need to apply some sort of interpolation to shorten the other vectors as well. In general, the simple omission of the last element of the vector is not a good idea. You can use something like \verb|vshort=(diff(vlong)*0.5+vlong(1:(end-1)))| to perform a simple interpolation.\\
+Don't use any numerical values for $k_b$ and the energy level distance $\epsilon$ in this first part of the problem set.
+
+\begin{enumerate}[resume]
+\item \textbf{(10 pts)} Write the formula for the multiplicity $\Omega(N,q)$ of an Einstein solid with $N$ oscillators containing $q$ energy units. We skip the numerical calculation of the multiplicities and jump to the entropy. Use the function \verb|gammaln()| to calculate the entropy (in units of $k_\mathrm{b}$) for \verb|N=25| oscillators and \verb|q=0:100| energy units. Plot the entropy versus the energy.\\
+Ideally, your report will contain: the formula $\Omega(N,q)$; your Matlab code defining the vector containing the entropies for all \verb|q|; the plot $S(q)$
+
+\item \textbf{(10 pts)} Since the function $S(q)$ is easy to handle we can obtain the temperature  by some simple form of finite differentiation $T=\Delta U/\Delta S$ (see comment at the beginning of the section). What are the units of the temperature if $U=q\epsilon$ is in units of the oscillator level separation $\epsilon$ and $S$ is taken from question (1)? Plot the temperature as a function of the energy.\\
+In your report: a comment on the units of $T$; the Matlab code except for the code to plot the graph; the plot $T(U)$
+
+\item \textbf{(10 pts)} Now plot the entropy as a function of the temperature. Since your vector $S$ is probably longer than your vector $T$ you need to perform an interpolation in order to make the plot.\\
+In your report: any Matlab code except for the part you need to make the plot; the plot $S(T)$
+
+\item \textbf{(20 pts)} By now we have everything to finally calculate the heat capacity $C$. How? Express the units of $C$ in this particular system in terms of $k_\mathrm{b}$ and $\epsilon$. Calculate the vector for the heat capacity as a function of the energy. Again, make sure that all your relevant vectors have the same length. Now you are wondering what happens if you double the amount of oscillators in your system. Change the corresponding parameter in (1) and plot the vectors $C^{N=25}$ and $C^{N=50}$ as a function of $U$ and as a function of $T$ (2 plots with 2 curves each). {\color{red}Note:} Calculate $C^{N=50}$ for \verb|q=0:200| instead of \verb|q=0:100|. Compare the two curves for the heat capacity $C(T)$. Why do you need to double the energy range in order to end up with roughly the same temperature range for \verb|N=25| and \verb|N=50|?\\
+To solve this problem, you could use the command {\color{red}\verb|hold on|} right after you define your plots in order to be able to add another graph to the figure. Then you could simply go back to problem (1) and rerun the code for \verb|N=50| and \verb|q=0:200|. Of course you can also use a for-loop and implement all the previous steps again.\\
+In your report: a comment on the units of your vector $C$; the Matlab code you used to calculate the heat capacity; the two plots; a comment on the heat capacity for \verb|N=25| and \verb|N=50|; a comment on the temperature range
+
+\end{enumerate}
+
+\section*{Heat capacity of the Einstein solid  -- comparison to real examples (50 pts)}
+\label{sec:lot}
+
+The heat capacity of the Einstein solid is given by 
+\begin{equation}
+C_V=3Nk_\mathrm{b}\left(\frac{\epsilon}{k_\mathrm{b}T}\right)^2\frac{\exp\left(\epsilon/k_\mathrm{b}T\right)}{\left(\exp\left(\epsilon/k_\mathrm{b}T\right)-1\right)^2}.
+\label{cv_formula}
+\end{equation}
+
+\begin{enumerate}[resume]
+
+\item \textbf{(15 pts)} In the files \verb|lead.dat| and \verb|aluminum.dat| you can find the data $C_V$ (in units of J/K for one mole of material) of two different materials for a temperature range from 0 to $500\,\mathrm{K}$. Load the two files by applying the easy-to-use command \verb|importdata('my_file.dat')|, which returns an array with two columns for $T[K]$ and $C_V[J/K]$. Display the data from the two files in a single plot. Don't forget the legend.\\
+In your report: the plot
+
+\item \textbf{(20 pts)} \label{fit_problem}We want to fit equation \ref{cv_formula} to the data of the two materials. In order to do so we will use the Matlab function \verb|a=fminsearch(f,a0)| to obtain the parameter $a$ for which the function value of $f$ adopts a minimum. The internal iteration performed by Matlab starts from the initial value $a_0$. Clearly, in our case the only free parameter is the energy level separation $\epsilon$ of the Einstein model. The function we want to minimize is the sum of the squares of the differences between the experimental values and the curve $C(T)$. Take a look at the example below. Then adapt it to find the best $\epsilon$ to fit the data in the files \verb|lead.dat| and \verb|aluminum.dat|.\\
+\textbf{Remark:} This example is only a suggestion. Of course you are welcome to use any other curve fitting function you like.
+\begin{verbatim}
+%%Example:
+%Here we calculate some fake data for a Lorentzian curve 
+%with a width of 1.321 and some random noise
+gammatheory=1.321
+X=-20:0.1:20
+data=1./(1+(X./gammatheory).^2)+0.2*rand(1,length(X))-0.1
+
+%Then we define a function f which returns the sum of the squares
+%of the differences between the data and the Lorentzian curve.
+f=@(gamma) sum((data-1./(1+(X./gamma).^2)).^2)
+
+%We make a guess about gamma and tell the
+%function fminsearch() to find the best gamma starting at gammaguess.
+gammaguess=1
+gammafinal=fminsearch(f,gammaguess)
+
+%Then we compare our fitted function to the data.
+plot(X,1./(1+(X./gammafinal).^2),X,data,'.')
+\end{verbatim}
+
+\textbf{Hints:} Use the initial value $\epsilon_0=10\,\mathrm{meV}$ for both materials. You can find all relevant constants at the top of this document.\\ 
+In your report: your Matlab code; the two values $\epsilon_\mathrm{Al}$ and $\epsilon_\mathrm{Pb}$ in units of eV
+
+\item \textbf{(10 pts)} Evaluate the fitted functions at the temperatures \verb|T=0:500|. Plot both data sets (as points) as well as your fitted functions (as continuous lines). Don't forget the legend.\\
+In your report: the plot
+
+\item \textbf{(5 pts)} Compare the values for $\epsilon$ you obtained in \ref{fit_problem}. Does the result surprise you when comparing to the values in the table below? Explain.
+
+\begin{tabular}[]{lll}
+		&	Young's modulus $\mathrm{[GPa]}$	&	Speed of sound $\mathrm{[ms^{-1}]}$	\\	
+		&	(quantifies stiffness)				&									\\
+Lead		& 	16							&	1190								\\
+Aluminum	& 	69							&	5000								\\
+\end{tabular}
+
+In your report: the comparison and interpretation of $\epsilon_{Al}$ and $\epsilon_{Pb}$
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
